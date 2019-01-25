@@ -1,0 +1,2 @@
+class TestLine < ApplicationRecord
+end

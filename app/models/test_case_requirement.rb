@@ -1,0 +1,2 @@
+class TestCaseRequirement < ApplicationRecord
+end
