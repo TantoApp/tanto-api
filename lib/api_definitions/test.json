@@ -1,0 +1,148 @@
+{
+  "name": "test",
+  "apidoc": {
+    "version": "1.0.0"
+  },
+  "models": {
+    "test_form": {
+      "fields": [
+        {
+          "name": "test_case_id",
+          "type": "integer",
+          "required": true
+        },
+        {
+          "name": "description",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "status",
+          "type": "integer",
+          "default": 0
+        },
+        {
+          "name": "active",
+          "type": "boolean",
+          "default": true
+        }
+      ]
+    },
+    "test": {
+      "fields": [
+        {
+          "name": "test_case_id",
+          "type": "integer"
+        },
+        {
+          "name": "description",
+          "type": "string"
+        },
+        {
+          "name": "status",
+          "type": "integer"
+        },
+        {
+          "name": "active",
+          "type": "boolean"
+        },
+        {
+          "name": "created_at",
+          "type": "string"
+        },
+        {
+          "name": "updated_at",
+          "type": "string"
+        }
+      ]
+    }
+  },
+  "resources": {
+    "test": {
+      "path": "/api/v1/tests",
+      "operations": [
+        {
+          "method": "GET",
+          "description": "Search for a specific test. via id",
+          "responses": {
+            "200": {
+              "type": "map[test]"
+            }
+          }
+        },
+        {
+          "method": "GET",
+          "path": "/:id",
+          "description": "Search for a specific test. via id",
+          "parameters": [
+            {
+              "name": "id",
+              "type": "integer",
+              "description": "Find test with this id. Exact match",
+              "required": true
+            }
+          ],
+          "responses": {
+            "200": {
+              "type": "test"
+            },
+            "404": {
+              "type": "string",
+              "description": "test not found"
+            }
+          }
+        },
+        {
+          "method": "POST",
+          "body": {
+            "type": "test_form"
+          },
+          "responses": {
+            "200": {
+              "type": "test"
+            }
+          }
+        },
+        {
+          "method": "DELETE",
+          "path": "/:id",
+          "description": "Deletes the test specified via id",
+          "parameters": [
+            {
+              "name": "id",
+              "type": "integer",
+              "description": "Find test with this id. Exact match",
+              "required": true
+            }
+          ],
+          "responses": {
+            "200": {
+              "type": "string"
+            }
+          }
+        },
+        {
+          "method": "PUT",
+          "path": "/:id",
+          "description": "Updates the test specified via id",
+          "parameters": [
+            {
+              "name": "id",
+              "type": "integer",
+              "description": "Find test with this id. Exact match",
+              "required": true
+            }
+          ],
+          "body": {
+            "type": "test_form"
+          },
+          "responses": {
+            "200": {
+              "type": "test"
+            }
+          }
+        }
+      ]
+    }
+  }
+}

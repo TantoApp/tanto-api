@@ -1,0 +1,148 @@
+{
+  "name": "test_case",
+  "apidoc": {
+    "version": "1.0.0"
+  },
+  "models": {
+    "test_case_form": {
+      "fields": [
+        {
+          "name": "project_id",
+          "type": "integer",
+          "required": true
+        },
+        {
+          "name": "description",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "status",
+          "type": "integer",
+          "default": 0
+        },
+        {
+          "name": "active",
+          "type": "boolean",
+          "default": true
+        }
+      ]
+    },
+    "test_case": {
+      "fields": [
+        {
+          "name": "project_id",
+          "type": "integer"
+        },
+        {
+          "name": "description",
+          "type": "string"
+        },
+        {
+          "name": "status",
+          "type": "integer"
+        },
+        {
+          "name": "active",
+          "type": "boolean"
+        },
+        {
+          "name": "created_at",
+          "type": "string"
+        },
+        {
+          "name": "updated_at",
+          "type": "string"
+        }
+      ]
+    }
+  },
+  "resources": {
+    "test_case": {
+      "path": "/api/v1/test_cases",
+      "operations": [
+        {
+          "method": "GET",
+          "description": "Search for a specific test_case. via id",
+          "responses": {
+            "200": {
+              "type": "map[test_case]"
+            }
+          }
+        },
+        {
+          "method": "GET",
+          "path": "/:id",
+          "description": "Search for a specific test_case. via id",
+          "parameters": [
+            {
+              "name": "id",
+              "type": "integer",
+              "description": "Find test_case with this id. Exact match",
+              "required": true
+            }
+          ],
+          "responses": {
+            "200": {
+              "type": "test_case"
+            },
+            "404": {
+              "type": "string",
+              "description": "test_case not found"
+            }
+          }
+        },
+        {
+          "method": "POST",
+          "body": {
+            "type": "test_case_form"
+          },
+          "responses": {
+            "200": {
+              "type": "test_case"
+            }
+          }
+        },
+        {
+          "method": "DELETE",
+          "path": "/:id",
+          "description": "Deletes the test_case specified via id",
+          "parameters": [
+            {
+              "name": "id",
+              "type": "integer",
+              "description": "Find test_case with this id. Exact match",
+              "required": true
+            }
+          ],
+          "responses": {
+            "200": {
+              "type": "string"
+            }
+          }
+        },
+        {
+          "method": "PUT",
+          "path": "/:id",
+          "description": "Updates the test_case specified via id",
+          "parameters": [
+            {
+              "name": "id",
+              "type": "integer",
+              "description": "Find test_case with this id. Exact match",
+              "required": true
+            }
+          ],
+          "body": {
+            "type": "test_case_form"
+          },
+          "responses": {
+            "200": {
+              "type": "test_case"
+            }
+          }
+        }
+      ]
+    }
+  }
+}

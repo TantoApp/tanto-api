@@ -1,0 +1,148 @@
+{
+  "name": "project",
+  "apidoc": {
+    "version": "1.0.0"
+  },
+  "models": {
+    "project_form": {
+      "fields": [
+        {
+          "name": "name",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "description",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "status",
+          "type": "integer",
+          "default": 0
+        },
+        {
+          "name": "active",
+          "type": "boolean",
+          "default": true
+        }
+      ]
+    },
+    "project": {
+      "fields": [
+        {
+          "name": "name",
+          "type": "string"
+        },
+        {
+          "name": "description",
+          "type": "string"
+        },
+        {
+          "name": "status",
+          "type": "integer"
+        },
+        {
+          "name": "active",
+          "type": "boolean"
+        },
+        {
+          "name": "created_at",
+          "type": "string"
+        },
+        {
+          "name": "updated_at",
+          "type": "string"
+        }
+      ]
+    }
+  },
+  "resources": {
+    "project": {
+      "path": "/api/v1/projects",
+      "operations": [
+        {
+          "method": "GET",
+          "description": "Search for a specific project. via id",
+          "responses": {
+            "200": {
+              "type": "map[project]"
+            }
+          }
+        },
+        {
+          "method": "GET",
+          "path": "/:id",
+          "description": "Search for a specific project. via id",
+          "parameters": [
+            {
+              "name": "id",
+              "type": "integer",
+              "description": "Find project with this id. Exact match",
+              "required": true
+            }
+          ],
+          "responses": {
+            "200": {
+              "type": "project"
+            },
+            "404": {
+              "type": "string",
+              "description": "project not found"
+            }
+          }
+        },
+        {
+          "method": "POST",
+          "body": {
+            "type": "project_form"
+          },
+          "responses": {
+            "200": {
+              "type": "project"
+            }
+          }
+        },
+        {
+          "method": "DELETE",
+          "path": "/:id",
+          "description": "Deletes the project specified via id",
+          "parameters": [
+            {
+              "name": "id",
+              "type": "integer",
+              "description": "Find project with this id. Exact match",
+              "required": true
+            }
+          ],
+          "responses": {
+            "200": {
+              "type": "string"
+            }
+          }
+        },
+        {
+          "method": "PUT",
+          "path": "/:id",
+          "description": "Updates the project specified via id",
+          "parameters": [
+            {
+              "name": "id",
+              "type": "integer",
+              "description": "Find project with this id. Exact match",
+              "required": true
+            }
+          ],
+          "body": {
+            "type": "project_form"
+          },
+          "responses": {
+            "200": {
+              "type": "project"
+            }
+          }
+        }
+      ]
+    }
+  }
+}
