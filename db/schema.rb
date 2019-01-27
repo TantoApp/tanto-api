@@ -32,8 +32,8 @@ ActiveRecord::Schema.define(version: 2019_01_25_032454) do
   create_table "projects", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "name"
     t.string "description"
-    t.integer "status"
-    t.boolean "active"
+    t.integer "status", default: 0
+    t.boolean "active", default: true
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -41,7 +41,7 @@ ActiveRecord::Schema.define(version: 2019_01_25_032454) do
   create_table "test_case_requirements", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "title"
     t.string "description"
-    t.integer "status"
+    t.integer "status", default: 0
     t.integer "test_case_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -49,27 +49,27 @@ ActiveRecord::Schema.define(version: 2019_01_25_032454) do
 
   create_table "test_cases", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "description"
-    t.integer "status"
     t.integer "project_id"
-    t.boolean "active"
+    t.integer "status", default: 0
+    t.boolean "active", default: true
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
   create_table "test_lines", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.text "description"
-    t.integer "status"
     t.integer "test_id"
-    t.boolean "active"
+    t.integer "status", default: 0
+    t.boolean "active", default: true
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
   create_table "tests", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "description"
-    t.integer "status"
     t.integer "test_case_id"
-    t.boolean "active"
+    t.integer "status", default: 0
+    t.boolean "active", default: true
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
