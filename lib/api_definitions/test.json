@@ -31,6 +31,10 @@
     "test": {
       "fields": [
         {
+          "name": "id",
+          "type": "integer"
+        },
+        {
           "name": "test_case_id",
           "type": "integer"
         },
@@ -66,9 +70,17 @@
           "description": "Search for a specific test. via id",
           "responses": {
             "200": {
-              "type": "map[test]"
+              "type": "[test]"
             }
-          }
+          },
+          "parameters": [
+            {
+              "name": "test_case_id",
+              "type": "integer",
+              "description": "Find the test_case_id's tests.",
+              "required": false
+            }
+          ]
         },
         {
           "method": "GET",

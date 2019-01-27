@@ -22,6 +22,13 @@ gem 'puma', '~> 3.11'
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 
+# Trailblazer
+gem "trailblazer", ">= 2.0.3"
+gem "trailblazer-rails" # if you are in rails.
+gem 'dry-validation'
+gem 'reform-rails'
+gem 'multi_json'
+
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', '>= 1.1.0', require: false
 
@@ -45,9 +52,3 @@ end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
-
-# Trailblazer
-gem "trailblazer"
-gem "trailblazer-rails" # if you are in rails.
-gem 'dry-validation'
-gem 'reform-rails'

@@ -71,9 +71,13 @@ module Tantoapp
             end
 
             # Search for a specific test_line. via id
-            def get
-              r = @client.request("/api/v1/test_lines").get
-              r.inject({}) { |hash, x| hash[x[0]] = x[1].nil? ? nil : ::Tantoapp::Test::Line::V1::Models::TestLine.new(x[1]); hash }
+            def get(incoming={})
+              opts = HttpClient::Helper.symbolize_keys(incoming)
+              query = {
+                :test_id => (x = opts.delete(:test_id); x.nil? ? nil : HttpClient::Preconditions.assert_class('test_id', x, Integer))
+              }.delete_if { |k, v| v.nil? }
+              r = @client.request("/api/v1/test_lines").with_query(query).get
+              r.map { |x| ::Tantoapp::Test::Line::V1::Models::TestLine.new(x) }
             end
 
             # Search for a specific test_line. via id
@@ -112,11 +116,12 @@ module Tantoapp
 
           class TestLine
 
-            attr_reader :test_id, :description, :status, :active, :created_at, :updated_at
+            attr_reader :id, :test_id, :description, :status, :active, :created_at, :updated_at
 
             def initialize(incoming={})
               opts = HttpClient::Helper.symbolize_keys(incoming)
-              HttpClient::Preconditions.require_keys(opts, [:test_id, :description, :status, :active, :created_at, :updated_at], 'TestLine')
+              HttpClient::Preconditions.require_keys(opts, [:id, :test_id, :description, :status, :active, :created_at, :updated_at], 'TestLine')
+              @id = HttpClient::Preconditions.assert_class('id', opts.delete(:id), Integer)
               @test_id = HttpClient::Preconditions.assert_class('test_id', opts.delete(:test_id), Integer)
               @description = HttpClient::Preconditions.assert_class('description', opts.delete(:description), String)
               @status = HttpClient::Preconditions.assert_class('status', opts.delete(:status), Integer)
@@ -135,6 +140,7 @@ module Tantoapp
 
             def to_hash
               {
+                :id => id,
                 :test_id => test_id,
                 :description => description,
                 :status => status,

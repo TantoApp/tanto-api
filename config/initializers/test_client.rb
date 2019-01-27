@@ -70,9 +70,13 @@ module Tantoapp
           end
 
           # Search for a specific test. via id
-          def get
-            r = @client.request("/api/v1/tests").get
-            r.inject({}) { |hash, x| hash[x[0]] = x[1].nil? ? nil : ::Tantoapp::Test::V1::Models::Test.new(x[1]); hash }
+          def get(incoming={})
+            opts = HttpClient::Helper.symbolize_keys(incoming)
+            query = {
+              :test_case_id => (x = opts.delete(:test_case_id); x.nil? ? nil : HttpClient::Preconditions.assert_class('test_case_id', x, Integer))
+            }.delete_if { |k, v| v.nil? }
+            r = @client.request("/api/v1/tests").with_query(query).get
+            r.map { |x| ::Tantoapp::Test::V1::Models::Test.new(x) }
           end
 
           # Search for a specific test. via id
@@ -111,11 +115,12 @@ module Tantoapp
 
         class Test
 
-          attr_reader :test_case_id, :description, :status, :active, :created_at, :updated_at
+          attr_reader :id, :test_case_id, :description, :status, :active, :created_at, :updated_at
 
           def initialize(incoming={})
             opts = HttpClient::Helper.symbolize_keys(incoming)
-            HttpClient::Preconditions.require_keys(opts, [:test_case_id, :description, :status, :active, :created_at, :updated_at], 'Test')
+            HttpClient::Preconditions.require_keys(opts, [:id, :test_case_id, :description, :status, :active, :created_at, :updated_at], 'Test')
+            @id = HttpClient::Preconditions.assert_class('id', opts.delete(:id), Integer)
             @test_case_id = HttpClient::Preconditions.assert_class('test_case_id', opts.delete(:test_case_id), Integer)
             @description = HttpClient::Preconditions.assert_class('description', opts.delete(:description), String)
             @status = HttpClient::Preconditions.assert_class('status', opts.delete(:status), Integer)
@@ -134,6 +139,7 @@ module Tantoapp
 
           def to_hash
             {
+              :id => id,
               :test_case_id => test_case_id,
               :description => description,
               :status => status,

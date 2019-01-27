@@ -1,51 +1,35 @@
 class Api::V1::ProjectsController < ApplicationController
-  before_action :set_project, only: [:show, :update, :destroy]
-
-  # GET /api/v1/projects
   def index
-    @projects = Project.all
-
-    render json: @projects
+    run Project::Index
+    render json: result["model"]
   end
 
-  # GET /api/v1/projects/1
   def show
-    render json: @project
+    run Project::Show
+    render json: result["model"]
   end
 
-  # POST /api/v1/projects
   def create
-    @project = Project.new(project_params)
-
-    if @project.save
-      render json: @project, status: :created, location: @api_v1_project
-    else
-      render json: @project.errors, status: :unprocessable_entity
+    run Project::Create do |result|
+      if (errors = result["result.contract.default"].try(:errors)).present?
+        render json: errors, status: :unprocessable_entity
+      else
+        render json: result['model'], status: :created, location: @api_v1_project
+      end
     end
   end
 
-  # PATCH/PUT /api/v1/projects/1
   def update
-    if @project.update(project_params)
-      render json: @project
-    else
-      render json: @project.errors, status: :unprocessable_entity
+    run Project::Update do |result|
+      if (errors = result["result.contract.default"].try(:errors)).present?
+        render json: errors, status: :unprocessable_entity
+      else
+        render json: result['model'], status: :created, location: @api_v1_project
+      end
     end
   end
 
-  # DELETE /api/v1/projects/1
   def destroy
-    @project.destroy
+    run Project::Delete
   end
-
-  private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_project
-      @project = Project.find(params[:id])
-    end
-
-    # Only allow a trusted parameter "white list" through.
-    def project_params
-      params.require(:project).permit(:name, :description, :status, :active)
-    end
 end

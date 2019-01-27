@@ -31,6 +31,10 @@
     "test_line": {
       "fields": [
         {
+          "name": "id",
+          "type": "integer"
+        },
+        {
           "name": "test_id",
           "type": "integer"
         },
@@ -66,9 +70,17 @@
           "description": "Search for a specific test_line. via id",
           "responses": {
             "200": {
-              "type": "map[test_line]"
+              "type": "[test_line]"
             }
-          }
+          },
+          "parameters": [
+            {
+              "name": "test_id",
+              "type": "integer",
+              "description": "Find the test_id's test_lines.",
+              "required": false
+            }
+          ]
         },
         {
           "method": "GET",

@@ -72,7 +72,7 @@ module Tantoapp
           # Search for a specific project. via id
           def get
             r = @client.request("/api/v1/projects").get
-            r.inject({}) { |hash, x| hash[x[0]] = x[1].nil? ? nil : ::Tantoapp::Project::V1::Models::Project.new(x[1]); hash }
+            r.map { |x| ::Tantoapp::Project::V1::Models::Project.new(x) }
           end
 
           # Search for a specific project. via id
@@ -111,11 +111,12 @@ module Tantoapp
 
         class Project
 
-          attr_reader :name, :description, :status, :active, :created_at, :updated_at
+          attr_reader :id, :name, :description, :status, :active, :created_at, :updated_at
 
           def initialize(incoming={})
             opts = HttpClient::Helper.symbolize_keys(incoming)
-            HttpClient::Preconditions.require_keys(opts, [:name, :description, :status, :active, :created_at, :updated_at], 'Project')
+            HttpClient::Preconditions.require_keys(opts, [:id, :name, :description, :status, :active, :created_at, :updated_at], 'Project')
+            @id = HttpClient::Preconditions.assert_class('id', opts.delete(:id), Integer)
             @name = HttpClient::Preconditions.assert_class('name', opts.delete(:name), String)
             @description = HttpClient::Preconditions.assert_class('description', opts.delete(:description), String)
             @status = HttpClient::Preconditions.assert_class('status', opts.delete(:status), Integer)
@@ -134,6 +135,7 @@ module Tantoapp
 
           def to_hash
             {
+              :id => id,
               :name => name,
               :description => description,
               :status => status,

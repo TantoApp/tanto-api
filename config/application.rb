@@ -31,5 +31,12 @@ module TantoApi
     # Middleware like session, flash, cookies can be added back manually.
     # Skip views, helpers and assets when generating a new resource.
     config.api_only = true
+
+
+    # Because we are only using an API. Set Trailblazer's controller to use the base API class
+    config.trailblazer.application_controller = "ActionController::API"
+
+    # Enable Tracing
+    config.trailblazer.enable_tracing = true
   end
 end

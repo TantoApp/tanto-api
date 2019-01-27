@@ -71,9 +71,13 @@ module Tantoapp
             end
 
             # Search for a specific test_case. via id
-            def get
-              r = @client.request("/api/v1/test_cases").get
-              r.inject({}) { |hash, x| hash[x[0]] = x[1].nil? ? nil : ::Tantoapp::Test::Case::V1::Models::TestCase.new(x[1]); hash }
+            def get(incoming={})
+              opts = HttpClient::Helper.symbolize_keys(incoming)
+              query = {
+                :project_id => (x = opts.delete(:project_id); x.nil? ? nil : HttpClient::Preconditions.assert_class('project_id', x, Integer))
+              }.delete_if { |k, v| v.nil? }
+              r = @client.request("/api/v1/test_cases").with_query(query).get
+              r.map { |x| ::Tantoapp::Test::Case::V1::Models::TestCase.new(x) }
             end
 
             # Search for a specific test_case. via id
@@ -112,11 +116,12 @@ module Tantoapp
 
           class TestCase
 
-            attr_reader :project_id, :description, :status, :active, :created_at, :updated_at
+            attr_reader :id, :project_id, :description, :status, :active, :created_at, :updated_at
 
             def initialize(incoming={})
               opts = HttpClient::Helper.symbolize_keys(incoming)
-              HttpClient::Preconditions.require_keys(opts, [:project_id, :description, :status, :active, :created_at, :updated_at], 'TestCase')
+              HttpClient::Preconditions.require_keys(opts, [:id, :project_id, :description, :status, :active, :created_at, :updated_at], 'TestCase')
+              @id = HttpClient::Preconditions.assert_class('id', opts.delete(:id), Integer)
               @project_id = HttpClient::Preconditions.assert_class('project_id', opts.delete(:project_id), Integer)
               @description = HttpClient::Preconditions.assert_class('description', opts.delete(:description), String)
               @status = HttpClient::Preconditions.assert_class('status', opts.delete(:status), Integer)
@@ -135,6 +140,7 @@ module Tantoapp
 
             def to_hash
               {
+                :id => id,
                 :project_id => project_id,
                 :description => description,
                 :status => status,

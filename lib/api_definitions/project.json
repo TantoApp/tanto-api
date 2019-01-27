@@ -31,6 +31,10 @@
     "project": {
       "fields": [
         {
+          "name": "id",
+          "type": "integer"
+        },
+        {
           "name": "name",
           "type": "string"
         },
@@ -66,7 +70,7 @@
           "description": "Search for a specific project. via id",
           "responses": {
             "200": {
-              "type": "map[project]"
+              "type": "[project]"
             }
           }
         },

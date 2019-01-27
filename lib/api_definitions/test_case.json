@@ -31,6 +31,10 @@
     "test_case": {
       "fields": [
         {
+          "name": "id",
+          "type": "integer"
+        },
+        {
           "name": "project_id",
           "type": "integer"
         },
@@ -66,9 +70,17 @@
           "description": "Search for a specific test_case. via id",
           "responses": {
             "200": {
-              "type": "map[test_case]"
+              "type": "[test_case]"
             }
-          }
+          },
+          "parameters": [
+            {
+              "name": "project_id",
+              "type": "integer",
+              "description": "Find the project_id's test_case.",
+              "required": false
+            }
+          ]
         },
         {
           "method": "GET",
